@@ -11,6 +11,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Renttracker.UWP.ViewModels
 {
+    /// <summary>
+    /// View model for the MainPage.
+    /// </summary>
     public class MainPageViewModel : ViewModelBase
     {
         MtObservableCollection<Home> _homes { get; set; }

@@ -7,9 +7,18 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "country": "United States",
+      "region": "NV",
+      "city": "Las Vegas",
+      "suburb": "Sampleville",
+      "address": "4559 Sparwood Drive",
+      "postcode": "89147"
+
+
+    },
     "area": 2219,
-    "price":  1450
+    "price": 1450
   },
   {
     "baths": 1,
@@ -19,9 +28,18 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "country": "United States",
+      "region": "NV",
+      "city": "Las Vegas",
+      "suburb": "Sampleville",
+      "address": "4559 Sparwood Drive",
+      "postcode": "89147"
+
+
+    },
     "area": 2219,
-    "price":  12000
+    "price": 12000
   },
   {
     "baths": 4,
@@ -31,11 +49,21 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "country": "United States",
+      "region": "NV",
+      "city": "Las Vegas",
+      "suburb": "Sampleville",
+      "address": "4559 Sparwood Drive",
+      "postcode": "89147"
+
+
+    },
     "area": 3219,
-    "price":  16000
+    "price": 16000
   },
   {
+    "area": 2219,
     "baths": 1,
     "beds": 1,
     "description": "A sample house",
@@ -43,8 +71,14 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
-    "area": 2219,
-    "price":  4000
+    "location": {
+      "country": "United States",
+      "region": "NV",
+      "city": "Las Vegas",
+      "suburb": "Sampleville",
+      "address": "4559 Sparwood Drive",
+      "postcode": "89147"
+    },
+    "price": 4000
   }
 ]

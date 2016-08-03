@@ -70,8 +70,9 @@
                         <Image Source="{x:Bind Images[0]}"
                                Grid.Row="0"
                                Stretch="UniformToFill"/>
-                        <TextBlock Text="{x:Bind Price}"
+                        <TextBlock Text="{x:Bind Name}"
                                    Grid.Row="1"
+                                   TextWrapping="Wrap"
                                    Margin="12"/>
                     </Grid>
                 </DataTemplate>
