@@ -51,9 +51,6 @@ namespace Renttracker.UWP
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            // long-running startup tasks go here
-            await Task.Delay(5000);
-
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
         }
