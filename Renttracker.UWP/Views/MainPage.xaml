@@ -5,6 +5,7 @@
       xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:controls="using:Template10.Controls"
+      xmlns:models="using:Renttracker.Models"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Renttracker.UWP.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,85 +15,68 @@
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
-    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
-                <VisualState x:Name="VisualStateNarrow">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for narrow view  -->
-                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="VisualStateNormal">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for normal view  -->
-                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="VisualStateWide">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <!--  TODO: change properties for wide view  -->
-                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        <StackPanel Orientation="Vertical"
+                    Grid.Row="0"
+                    x:Name="FilteringGrid">
+            <ToggleSwitch x:Name="PriceFilterToggleSwitch"
+                          Margin="12"
+                          IsOn="False"
+                          Toggled="{x:Bind ViewModel.PriceToggleSwitchToggled}"/>
+            <StackPanel Orientation="Horizontal"
+                        x:Name="PriceStackPanel">
+                <TextBox Header="Min price"
+                         IsEnabled="{Binding ElementName=PriceFilterToggleSwitch, Path=IsOn, Mode=OneWay}"
+                         Text="{x:Bind ViewModel.MinPrice, Mode=TwoWay}"
+                         Margin="12"/>
+                <TextBox Header="Max price"
+                         IsEnabled="{Binding ElementName=PriceFilterToggleSwitch, Path=IsOn, Mode=OneWay}"
+                         Text="{x:Bind ViewModel.MaxPrice, Mode=TwoWay}"
+                         Margin="12"/>
+            </StackPanel>
+            <ToggleSwitch x:Name="BedsFilterToggleSwitch"
+                          Margin="12"
+                          IsOn="False"
+                          Toggled="{x:Bind ViewModel.BedsToggleSwitchToggled}"/>
+            <StackPanel Orientation="Horizontal"
+                        x:Name="BedsStackPanel">
+                <TextBox Header="Min beds"
+                         IsEnabled="{Binding ElementName=BedsFilterToggleSwitch, Path=IsOn, Mode=OneWay}"
+                         Text="{x:Bind ViewModel.MinBeds, Mode=TwoWay}"
+                         Margin="12"/>
+                <TextBox Header="Max beds"
+                         IsEnabled="{Binding ElementName=BedsFilterToggleSwitch, Path=IsOn, Mode=OneWay}"
+                         Text="{x:Bind ViewModel.MaxBeds, Mode=TwoWay}"
+                         Margin="12"/>
+            </StackPanel>
+        </StackPanel>
+        <GridView ItemsSource="{x:Bind ViewModel.Homes, Mode=OneWay}"
+                  Grid.Column="1"
+                  x:Name="HomesGridView">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="models:Home">
+                    <Grid Height="216"
+                          Width="216">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
-                             RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Main Page">
-
-            <!--  secondary commands  -->
-            <controls:PageHeader.SecondaryCommands>
-                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
-                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
-                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
-            </controls:PageHeader.SecondaryCommands>
-
-        </controls:PageHeader>
-
-        <controls:Resizer x:Name="parameterResizer" Margin="16,16,16,0"
-                          RelativePanel.AlignLeftWithPanel="True"
-                          RelativePanel.Below="pageHeader">
-
-            <TextBox MinWidth="150" MinHeight="62"
-                     Header="Parameter to pass"
-                     Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap">
-                <Interactivity:Interaction.Behaviors>
-                    <!--  enable submit on enter key  -->
-                    <Behaviors:KeyBehavior Key="Enter">
-                        <Core:CallMethodAction MethodName="GotoDetailsPage" TargetObject="{Binding}" />
-                    </Behaviors:KeyBehavior>
-                    <!--  focus on textbox when page loads  -->
-                    <Core:EventTriggerBehavior>
-                        <Behaviors:FocusAction />
-                    </Core:EventTriggerBehavior>
-                </Interactivity:Interaction.Behaviors>
-            </TextBox>
-
-        </controls:Resizer>
-
-        <Button x:Name="submitButton"
-                Click="{x:Bind ViewModel.GotoDetailsPage}" Content="Submit"
-                RelativePanel.AlignBottomWith="parameterResizer"
-                RelativePanel.RightOf="parameterResizer" />
-
-        <TextBlock x:Name="stateTextBox" Margin="16,16,0,0"
-                   RelativePanel.AlignLeftWith="parameterResizer"
-                   RelativePanel.Below="parameterResizer"
-                   Text="Current Visual State" />
-
-    </RelativePanel>
+                        <Image Source="{x:Bind Images[0]}"
+                               Grid.Row="0"
+                               Stretch="UniformToFill"/>
+                        <TextBlock Text="{x:Bind Price}"
+                                   Grid.Row="1"
+                                   Margin="12"/>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+    </Grid>
 </Page>
 
