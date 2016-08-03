@@ -3,7 +3,7 @@
   <Identity Name="1484b235-4775-430c-9499-3319c12bf9f1" Publisher="CN=callu" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="1484b235-4775-430c-9499-3319c12bf9f1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Renttracker.UWP</DisplayName>
+    <DisplayName>Renttracker</DisplayName>
     <PublisherDisplayName>callu</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
