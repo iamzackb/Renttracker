@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="Renttracker.UWP.Views.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Renttracker.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:vm="using:Renttracker.UWP.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:MapPageViewModel x:Name="ViewModel"/>
+    </Page.DataContext>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <maps:MapControl ColorScheme="Light" DesiredPitch="0" Heading="360" ZoomLevel="18" PanInteractionMode="Auto" RotateInteractionMode="GestureOnly"
+                         TiltInteractionMode="GestureOnly" ZoomInteractionMode="GestureOnly" LandmarksVisible="True" BusinessLandmarksVisible="True"
+                         WatermarkMode="Automatic" x:Name="MainMapControl" Grid.Row="1" HorizontalAlignment="Stretch"
+                         VerticalAlignment="Stretch" MapServiceToken="QaRpnH3tREpexWlb668X~59dRrh2hYh-Xuw5QL-G1Vg~AvPKUytGs4SGEfaVOCmjC554LE0kQD_DxBzQS8FKA7Lfk7TDGRhOzfdkz-c9vti9"/>
+    </Grid>
+</Page>
