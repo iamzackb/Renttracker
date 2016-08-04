@@ -8,6 +8,7 @@ using Renttracker.Models;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Renttracker.UWP.Views;
 
 namespace Renttracker.UWP.ViewModels
 {
@@ -43,6 +44,7 @@ namespace Renttracker.UWP.ViewModels
         
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            _homes.Clear();
             _homes.AddRange(await Controllers.ProtoController.GetHomesFromSampleJsonAsync());
             await Task.CompletedTask;
         }
@@ -56,6 +58,15 @@ namespace Renttracker.UWP.ViewModels
         {
             args.Cancel = false;
             await Task.CompletedTask;
+        }
+
+        public void HomeItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (SessionState.ContainsKey("map_location"))
+                SessionState.Remove("map_location");
+
+            SessionState.Add("map_location", (e.ClickedItem as Home).Location);
+            NavigationService.Navigate(typeof(MapPage));
         }
 
         public void PriceToggleSwitchToggled(object sender, RoutedEventArgs e)

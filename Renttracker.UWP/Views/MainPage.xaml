@@ -57,6 +57,8 @@
         </StackPanel>
         <GridView ItemsSource="{x:Bind ViewModel.Homes, Mode=OneWay}"
                   Grid.Column="1"
+                  IsItemClickEnabled="True"
+                  ItemClick="{x:Bind ViewModel.HomeItemClick}"
                   x:Name="HomesGridView">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:Home">
