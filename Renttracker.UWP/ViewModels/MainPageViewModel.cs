@@ -8,13 +8,10 @@ using Renttracker.Models;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Linq;
+using Renttracker.UWP.Views;
 
 namespace Renttracker.UWP.ViewModels
 {
-    /// <summary>
-    /// View model for the MainPage.
-    /// </summary>
     public class MainPageViewModel : ViewModelBase
     {
         MtObservableCollection<Home> _homes { get; set; }
@@ -32,14 +29,7 @@ namespace Renttracker.UWP.ViewModels
         int _maxBeds = 5;
         public int MaxBeds { get { return _maxBeds; } set { Set(ref _maxBeds, value); FilterHomes(); } }
 
-        private MtObservableCollection<Country> _countries { get; set; }
-        public ObservableCollectionView<Country> Countries { get; set; }
-
-        private Country _selectedCountry = default(Country);
-        public Country SelectedCountry { get { return _selectedCountry; } set { Set(ref _selectedCountry, value); FilterHomes(); } }
-
         Func<Home, bool> PriceFilter;
-        Func<Home, bool> CountryFilter;
         Func<Home, bool> BedsFilter;
 
         List<Func<Home, bool>> Filters = new List<Func<Home, bool>>();
@@ -48,19 +38,14 @@ namespace Renttracker.UWP.ViewModels
         {
             _homes = new MtObservableCollection<Home>();
             Homes = new ObservableCollectionView<Home>(_homes);
-            
-            _countries = new MtObservableCollection<Country>();
-            Countries = new ObservableCollectionView<Country>(_countries);
             PriceFilter = a => a.Price <= MaxPrice && a.Price >= MinPrice;
-            CountryFilter = a => a?.Location.Country == SelectedCountry;
             BedsFilter = a => a.Beds <= MaxBeds && a.Beds >= MinBeds;
         }
         
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            _countries.AddRange(await Controllers.CountryController.GetCountriesFromJsonAsync());
+            _homes.Clear();
             _homes.AddRange(await Controllers.ProtoController.GetHomesFromSampleJsonAsync());
-            SelectedCountry = Countries.First(c => c.CountryCode == "US");
             await Task.CompletedTask;
         }
 
@@ -75,16 +60,13 @@ namespace Renttracker.UWP.ViewModels
             await Task.CompletedTask;
         }
 
-        public void CountryToggleSwitchToggled(object sender, RoutedEventArgs e)
+        public void HomeItemClick(object sender, ItemClickEventArgs e)
         {
-            var toggleSwitch = sender as ToggleSwitch;
+            if (SessionState.ContainsKey("map_location"))
+                SessionState.Remove("map_location");
 
-            if (toggleSwitch.IsOn)
-                AddCountryFilter();
-            else
-                RemoveCountryFilter();
-
-            FilterHomes();
+            SessionState.Add("map_location", (e.ClickedItem as Home).Location);
+            NavigationService.Navigate(typeof(MapPage));
         }
 
         public void PriceToggleSwitchToggled(object sender, RoutedEventArgs e)
@@ -118,18 +100,12 @@ namespace Renttracker.UWP.ViewModels
                 var matches = true;
                 Filters.ForEach(b =>
                 {
-                    if (b.Invoke(a).Equals(false))
+                    if (!b.Invoke(a).Equals(true))
                         matches = false;
                 });
                 return matches;
             };
         }
-
-        void AddCountryFilter() =>
-            Filters.Add(CountryFilter);
-
-        void RemoveCountryFilter() =>
-            Filters.Remove(CountryFilter);
 
         void AddPriceFilter() =>
             Filters.Add(PriceFilter);
