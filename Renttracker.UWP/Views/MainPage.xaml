@@ -54,7 +54,21 @@
                          Text="{x:Bind ViewModel.MaxBeds, Mode=TwoWay}"
                          Margin="12"/>
             </StackPanel>
+            <ToggleSwitch x:Name="CountriesFilterToggleSwitch"
+                          Margin="12"
+                          IsOn="False"
+                          Toggled="{x:Bind ViewModel.CountryToggleSwitchToggled}"/>
+            <StackPanel x:Name="CountriesStackPanel"
+                        Orientation="Horizontal">
+                <ComboBox ItemsSource="{x:Bind ViewModel.Countries, Mode=OneWay}"
+                          SelectedItem="{Binding SelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding ElementName=CountriesFilterToggleSwitch, Path=IsOn, Mode=OneWay}"
+                          >
+                    
+                </ComboBox>
         </StackPanel>
+        </StackPanel>
+        
         <GridView ItemsSource="{x:Bind ViewModel.Homes, Mode=OneWay}"
                   Grid.Column="1"
                   x:Name="HomesGridView">

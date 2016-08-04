@@ -8,14 +8,16 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
     "location": {
-      "country": "United States",
+      "country": {
+        "countryCode": "US",
+        "name": "United States"
+
+      },
       "region": "NV",
       "city": "Las Vegas",
       "suburb": "Sampleville",
       "address": "4559 Sparwood Drive",
       "postcode": "89147"
-
-
     },
     "area": 2219,
     "price": 1450
@@ -29,7 +31,10 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
     "location": {
-      "country": "United States",
+      "country": {
+        "countryCode": "US",
+        "name":  "United States"
+      },
       "region": "NV",
       "city": "Las Vegas",
       "suburb": "Sampleville",
@@ -50,14 +55,15 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
     "location": {
-      "country": "United States",
+      "country": {
+        "name": "United States",
+        "countryCode": "US"
+      },
       "region": "NV",
       "city": "Las Vegas",
       "suburb": "Sampleville",
       "address": "4559 Sparwood Drive",
       "postcode": "89147"
-
-
     },
     "area": 3219,
     "price": 16000
@@ -72,7 +78,10 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
     "location": {
-      "country": "United States",
+      "country": {
+        "name": "United States",
+        "countryCode": "US"
+      },
       "region": "NV",
       "city": "Las Vegas",
       "suburb": "Sampleville",

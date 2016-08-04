@@ -91,6 +91,7 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <Content Include="homes.json" />
+    <Content Include="countries.json" />
     <None Include="Renttracker.UWP_TemporaryKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
@@ -98,6 +99,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\ProtoController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />

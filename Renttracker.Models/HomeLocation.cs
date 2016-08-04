@@ -21,7 +21,7 @@ namespace Renttracker.Models
         }
 
         [JsonProperty("country")]
-        public string Country { get; set; }
+        public Country Country { get; set; }
 
         [JsonProperty("region")]
         public string Region { get; set; }
