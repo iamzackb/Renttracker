@@ -10,9 +10,11 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
+using Template10.Services.NavigationService;
 
 namespace Renttracker.ViewModels
 {
@@ -30,7 +32,72 @@ namespace Renttracker.ViewModels
         private async Task RequestLocationAccessAsync()
         {
             await LocationService.Current.RequestLocationAccess();
+            LocationService.Current.Locator.StatusChanged -= OnGeolocatorStatusChanged;
+            LocationService.Current.Locator.StatusChanged += OnGeolocatorStatusChanged;
             await Task.CompletedTask;
+        }
+
+        private async void OnGeolocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
+        {
+            switch (args.Status)
+            {
+                case PositionStatus.Ready:
+                    {
+                        break;
+                    }
+                case PositionStatus.NotInitialized:
+                case PositionStatus.Disabled:
+                    {
+                        await Dispatcher.DispatchAsync(async () =>
+                        {
+                            MessageDialog dlg = new MessageDialog("Your device's locator is not initialized. This may indicate that you have not granted permission for Renttracker to access your location. Would you like to grant permission now?", "Whoops!");
+                            dlg.Commands.Add(new UICommand("Yes", async (command) =>
+                            {
+                                await RequestLocationAccessAsync();
+                            }));
+                            dlg.Commands.Add(new UICommand("No"));
+                            dlg.CancelCommandIndex = 1;
+                            await dlg.ShowAsync();
+                        });
+                        IsLocationAvailable = false;
+                        break;
+                    }
+                case PositionStatus.Initializing:
+                    {
+                        await Dispatcher.DispatchAsync(async () =>
+                        {
+                            await new MessageDialog("The GPS locator chip in your device is still initializing. Location data may not yet be available.", "Whoops!").ShowAsync();
+                        });
+                        IsLocationAvailable = false;
+                        break;
+                    }
+                case PositionStatus.NotAvailable:
+                    {
+                        await Dispatcher.DispatchAsync(async () =>
+                        {
+                            await new MessageDialog("Geolocation capabilities are not available on your version of Windows. Location data cannot be retrieved.", "Whoops!").ShowAsync();
+                        });
+                        NavigationService.GoBack();
+                        break;
+                    }
+                case PositionStatus.NoData:
+                    {
+                        await Dispatcher.DispatchAsync(async () =>
+                        {
+                            await new MessageDialog("Location data could not be obtained, as the location sensor could not find any valid data sources.", "Whoops!").ShowAsync();
+                        });
+                        NavigationService.GoBack();
+                        break;
+                    }
+                default:
+                    {
+                        await Dispatcher.DispatchAsync(async () =>
+                        {
+                            await new MessageDialog("The status of the locator was updated, but an invalid value was returned. Please try again later.", "Whoops").ShowAsync();
+                        });
+                        break;
+                    }
+            }
         }
 
         public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
@@ -79,8 +146,7 @@ namespace Renttracker.ViewModels
 
                 #region Get access to current location
                 await RequestLocationAccessAsync();
-                var geolocator = new Geolocator();
-                var pos = await geolocator.GetGeopositionAsync();
+                var pos = await LocationService.Current.Locator.GetGeopositionAsync();
                 #endregion Get access to current location
 
                 #region Search addresses
@@ -121,6 +187,16 @@ namespace Renttracker.ViewModels
 
             MainMapControl.MapElements.Add(pin);
             MainMapControl.Center = mapPoint;
+        }
+
+        public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
+        {
+            if (!args.Suspending)
+            {
+                LocationService.Current.Locator.StatusChanged -= OnGeolocatorStatusChanged;
+            }
+
+            await base.OnNavigatingFromAsync(args);
         }
     }
 }

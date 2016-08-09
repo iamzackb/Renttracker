@@ -15,9 +15,11 @@ namespace Renttracker.Services.LocationServices
     {
         private LocationService()
         {
-
+            
+            _current = this;
         }
 
+       
 
         private bool _isLocationAvailable;
 
@@ -34,6 +36,25 @@ namespace Renttracker.Services.LocationServices
             }
         }
 
+        private Geolocator _Locator = default(Geolocator);
+        /// <summary>
+        /// Represents a Geolocator object to be used in geolocation tasks.
+        /// </summary>
+        public Geolocator Locator
+        {
+            get
+            {
+                return _Locator ?? new Geolocator();
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value), "Locator cannot be null");
+
+                Locator = value;
+            }
+        }
+
         private GeolocationAccessStatus _locatorStatus;
         private GeolocationAccessStatus LocatorStatus
         {
@@ -47,6 +68,7 @@ namespace Renttracker.Services.LocationServices
                 IsLocationAvailable = (value == GeolocationAccessStatus.Allowed);
             }
         }
+
 
         public async Task RequestLocationAccess()
         {
