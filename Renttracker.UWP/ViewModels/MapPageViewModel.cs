@@ -27,8 +27,11 @@ namespace Renttracker.ViewModels
             Location = SessionState["map_location"] as Home;
             MainMapControl = (NavigationService.Content as MapPage).FindName("MainMapControl") as MapControl;       //Pull our MainMapControl from the XAML.
 
-            if (Location.Location.Latitude.HasValue && Location.Location.Longitude.HasValue)
+            if (!Location.HasValidAddress())
             {
+                if (!Location.HasValidCoordinates())
+                    throw new InvalidOperationException("Selected location has invalid criteria");
+
                 var latitude = Location.Location.Latitude.Value;
                 var longitude = Location.Location.Longitude.Value;
                 SetMapPointFromCoordinates(latitude, longitude);

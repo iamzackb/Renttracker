@@ -10,6 +10,43 @@ namespace Renttracker
 {
     public static class Extensions
     {
+        public static bool HasValidCoordinates(this Home home)
+        {
+            if (home.Location == null)
+                return false;
+
+            HomeLocation location = home.Location;
+
+            if (location.Latitude == null || location.Longitude == null)
+                return false;
+
+            return true;
+        }
+
+        public static bool HasValidAddress(this Home home)
+        {
+            if (home.Location == null)
+                return false;
+
+            HomeLocation location = home.Location;
+
+            if (string.IsNullOrEmpty(location.Address))
+                return false;
+
+            if (string.IsNullOrEmpty(location.City))
+                return false;
+
+            if (string.IsNullOrEmpty(location.PostCode))
+                return false;
+
+            if (string.IsNullOrEmpty(location.Region))
+                return false;
+
+            if (string.IsNullOrEmpty(location.Country))
+                return false;
+
+            return true;
+        }
         public static string GetLocationString(this Home home)
         {
             if (home.Location == null)

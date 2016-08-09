@@ -56,8 +56,7 @@ namespace Renttracker.ViewModels
             try
             {
 
-                if (!DesignMode.DesignModeEnabled)
-                {
+               
 #if DEBUG
                     _homes.Clear();
                     _homes.AddRange(await LocationService.Current.GetHomesFromSampleAsync());
@@ -66,11 +65,8 @@ namespace Renttracker.ViewModels
                 _homes.AddRange(await LocationService.Current.GetHomesAsync());
 #endif
                     
-                }
-                else
-                {
-
-                }
+                
+              
 
 
 
