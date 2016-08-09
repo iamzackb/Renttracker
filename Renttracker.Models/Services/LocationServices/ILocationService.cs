@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Renttracker.Services
+namespace Renttracker.Services.LocationServices
 {
     public interface ILocationService
     {

@@ -1,4 +1,6 @@
 ﻿using Renttracker.Services;
+using Renttracker.Services.DataServices;
+using Renttracker.Services.LocationServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;

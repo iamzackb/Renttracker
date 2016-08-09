@@ -10,6 +10,11 @@ namespace Renttracker
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Verifies whether a given Home object has valid coordinates
+        /// </summary>
+        /// <param name="home">Home object to verify</param>
+        /// <returns>Boolean</returns>
         public static bool HasValidCoordinates(this Home home)
         {
             if (home.Location == null)
@@ -23,6 +28,11 @@ namespace Renttracker
             return true;
         }
 
+        /// <summary>
+        /// Verifies whether a given Home object has a given address string
+        /// </summary>
+        /// <param name="home">Home object</param>
+        /// <returns>Boolean</returns>
         public static bool HasValidAddress(this Home home)
         {
             if (home.Location == null)
@@ -47,6 +57,12 @@ namespace Renttracker
 
             return true;
         }
+
+        /// <summary>
+        /// Gets the string interpretation of a Home object's location
+        /// </summary>
+        /// <param name="home">Home object</param>
+        /// <returns>Boolean</returns>
         public static string GetLocationString(this Home home)
         {
             if (home.Location == null)

@@ -27,9 +27,15 @@ namespace Renttracker.ViewModels
             };
         }
 
-        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
+        private async Task RequestLocationAccessAsync()
         {
             await LocationService.Current.RequestLocationAccess();
+            await Task.CompletedTask;
+        }
+
+        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
+        {
+            await RequestLocationAccessAsync();
         }
 
         Home _location;
@@ -72,7 +78,7 @@ namespace Renttracker.ViewModels
                 //Assume it's an address
 
                 #region Get access to current location
-                var accessStatus = await Geolocator.RequestAccessAsync();
+                await RequestLocationAccessAsync();
                 var geolocator = new Geolocator();
                 var pos = await geolocator.GetGeopositionAsync();
                 #endregion Get access to current location

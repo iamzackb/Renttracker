@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Renttracker.Services
+namespace Renttracker.Services.DataServices
 {
+    /// <summary>
+    /// Provides a contract for a service that retrieves data.
+    /// </summary>
     public interface IDataService
     {
         /// <summary>

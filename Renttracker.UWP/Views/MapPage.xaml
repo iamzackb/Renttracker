@@ -23,13 +23,15 @@
                          VerticalAlignment="Stretch" MapServiceToken="QaRpnH3tREpexWlb668X~59dRrh2hYh-Xuw5QL-G1Vg~AvPKUytGs4SGEfaVOCmjC554LE0kQD_DxBzQS8FKA7Lfk7TDGRhOzfdkz-c9vti9"/>
             </controls:ModalDialog.ModalContent>
             <controls:ModalDialog.Content>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="You haven't given permission to access your location."
-                               TextWrapping="Wrap" />
+                <RelativePanel>
+                    <TextBlock x:Name="locationDeniedText" Text="You haven't given permission to access your location."
+                               TextWrapping="Wrap"
+                               RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
                     <Button HorizontalAlignment="Center"
                             Content="Grant Access"
-                            Click="{x:Bind ViewModel.RequestLocationAccessAsync}"/>
-                </StackPanel>
+                            Click="{x:Bind ViewModel.RequestLocationAccessAsync}"
+                            RelativePanel.Below="locationDeniedText" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                </RelativePanel>
             </controls:ModalDialog.Content>
         </controls:ModalDialog>
         
