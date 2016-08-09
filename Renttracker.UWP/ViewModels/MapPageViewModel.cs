@@ -10,6 +10,7 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Services.Maps;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
 
@@ -17,7 +18,36 @@ namespace Renttracker.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
+        public MapPageViewModel()
+        {
+            LocationService.Current.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "IsLocationAvailable")
+                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
+            };
+        }
+
+        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
+        {
+            await LocationService.Current.RequestLocationPermissions();
+        }
+
         Home _location;
+
+        private bool _isLocationAvailable;
+        public bool IsLocationAvailable
+        {
+            get
+            {
+                return _isLocationAvailable;
+            }
+            private set
+            {
+                Set(ref _isLocationAvailable, value);
+            }
+        }
+
+
         public Home Location { get { return _location; } set { Set(ref _location, value); } }
 
         public MapControl MainMapControl;

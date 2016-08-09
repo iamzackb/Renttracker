@@ -10,6 +10,12 @@ namespace Renttracker.Services
     public interface ILocationService
     {
         /// <summary>
+        /// Verifies whether location data is available
+        /// </summary>
+        bool IsLocationAvailable { get; }
+
+
+        /// <summary>
         /// Gets house data from a JSON sample file.
         /// </summary>
         /// <returns>IEnumerable (Home - asynchronous)</returns>
