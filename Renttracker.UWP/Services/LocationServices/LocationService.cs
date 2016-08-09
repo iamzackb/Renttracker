@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Renttracker.Models;
+using Windows.Storage;
+using Newtonsoft.Json.Linq;
 
 namespace Renttracker.Services.LocationServices
 {
@@ -34,7 +36,11 @@ namespace Renttracker.Services.LocationServices
 
         public async Task<IEnumerable<Home>> GetHomesFromSampleAsync()
         {
-            return (await Controllers.ProtoController.GetHomesFromSampleJsonAsync());
+            var homes = new List<Home>();
+            var homesFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///homes.json"));
+            var homesJson = await FileIO.ReadTextAsync(homesFile);
+            homes = JArray.Parse(homesJson).ToObject<List<Home>>();
+            return homes;
         }
     }
 }
