@@ -29,7 +29,7 @@ namespace Renttracker.ViewModels
             };
         }
 
-        private async Task RequestLocationAccessAsync()
+        private async Task RequestLocationAsync()
         {
             await LocationService.Current.RequestLocationAccess();
             LocationService.Current.Locator.StatusChanged -= OnGeolocatorStatusChanged;
@@ -53,7 +53,7 @@ namespace Renttracker.ViewModels
                             MessageDialog dlg = new MessageDialog("Your device's locator is not initialized. This may indicate that you have not granted permission for Renttracker to access your location. Would you like to grant permission now?", "Whoops!");
                             dlg.Commands.Add(new UICommand("Yes", async (command) =>
                             {
-                                await RequestLocationAccessAsync();
+                                await RequestLocationAsync();
                             }));
                             dlg.Commands.Add(new UICommand("No"));
                             dlg.CancelCommandIndex = 1;
@@ -68,7 +68,6 @@ namespace Renttracker.ViewModels
                         {
                             await new MessageDialog("The GPS locator chip in your device is still initializing. Location data may not yet be available.", "Whoops!").ShowAsync();
                         });
-                        IsLocationAvailable = false;
                         break;
                     }
                 case PositionStatus.NotAvailable:
@@ -102,7 +101,7 @@ namespace Renttracker.ViewModels
 
         public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
         {
-            await RequestLocationAccessAsync();
+            await RequestLocationAsync();
         }
 
         Home _location;
@@ -145,7 +144,7 @@ namespace Renttracker.ViewModels
                 //Assume it's an address
 
                 #region Get access to current location
-                await RequestLocationAccessAsync();
+                await RequestLocationAsync();
                 var pos = await LocationService.Current.Locator.GetGeopositionAsync();
                 #endregion Get access to current location
 
