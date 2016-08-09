@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="1484b235-4775-430c-9499-3319c12bf9f1" Publisher="CN=callu" Version="1.0.0.0" />
+  <Identity Name="13028SupernovaApplication.Renttracker" Publisher="CN=6CF08C52-ECF2-4080-8D8E-4DFC2AEE5CB1" Version="0.1.0.0" />
   <mp:PhoneIdentity PhoneProductId="1484b235-4775-430c-9499-3319c12bf9f1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Renttracker.UWP</DisplayName>
-    <PublisherDisplayName>callu</PublisherDisplayName>
+    <DisplayName>Renttracker</DisplayName>
+    <PublisherDisplayName>Supernova Applications</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -14,7 +14,7 @@
     <Resource Language="x-generate" />
   </Resources>
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Renttracker.UWP.App">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Renttracker.App">
       <uap:VisualElements DisplayName="Renttracker" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Renttracker" BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
@@ -24,5 +24,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <DeviceCapability Name="location" />
   </Capabilities>
 </Package>

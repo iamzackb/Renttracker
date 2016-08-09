@@ -8,11 +8,19 @@ using Renttracker.Models;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Renttracker.Views;
+using Windows.Devices.Geolocation;
+using Renttracker.Services.LocationServices;
+using Windows.ApplicationModel;
+using Windows.UI.Popups;
+using Renttracker.Services.DataServices;
 
-namespace Renttracker.UWP.ViewModels
+namespace Renttracker.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+
+       
         MtObservableCollection<Home> _homes { get; set; }
         public ObservableCollectionView<Home> Homes { get; set; }
 
@@ -39,11 +47,40 @@ namespace Renttracker.UWP.ViewModels
             Homes = new ObservableCollectionView<Home>(_homes);
             PriceFilter = a => a.Price <= MaxPrice && a.Price >= MinPrice;
             BedsFilter = a => a.Beds <= MaxBeds && a.Beds >= MinBeds;
+            
+            
         }
         
+       
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            _homes.AddRange(await Controllers.ProtoController.GetHomesFromSampleJsonAsync());
+            try
+            {
+
+               
+#if DEBUG
+                    _homes.Clear();
+                    _homes.AddRange(await DataService.Current.GetHomesFromSampleAsync());
+#else
+                _homes.Clear();
+                _homes.AddRange(await DataService.Current.GetHomesAsync());
+#endif
+                    
+                
+              
+
+
+
+
+            }
+            catch (NotImplementedException ex)
+            {
+                await Dispatcher.DispatchAsync(async () =>
+                {
+                    await new MessageDialog(ex.Message, "Whoops!").ShowAsync();
+                });
+            }
+           
             await Task.CompletedTask;
         }
 
@@ -56,6 +93,15 @@ namespace Renttracker.UWP.ViewModels
         {
             args.Cancel = false;
             await Task.CompletedTask;
+        }
+
+        public void HomeItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (SessionState.ContainsKey("map_location"))
+                SessionState.Remove("map_location");
+
+            SessionState.Add("map_location", e.ClickedItem as Home);
+            NavigationService.Navigate(typeof(MapPage));
         }
 
         public void PriceToggleSwitchToggled(object sender, RoutedEventArgs e)

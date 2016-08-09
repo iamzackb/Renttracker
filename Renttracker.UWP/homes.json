@@ -7,7 +7,16 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "address": "40B Tiawhere Road",
+      "suburb": "Parksville",
+      "city": "Potau",
+      "postCode": "6661",
+      "region": "Imaginary",
+      "country": "New Zealand",
+      "latitude": 40.269950,
+      "longitude": -76.880032
+    },     
     "area": 2219,
     "price":  1450
   },
@@ -19,7 +28,14 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "address": "3521 Victoria Crescent",
+      "suburb": "Summertown",
+      "city": "Houston",
+      "region": "Texas",
+      "postCode": "534139",
+      "country": "United States"
+    },
     "area": 2219,
     "price":  12000
   },
@@ -31,7 +47,10 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "latitude": 40.3846,
+      "longitude": -65.4623
+    },
     "area": 3219,
     "price":  16000
   },
@@ -43,7 +62,13 @@
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/s6qkfekj4a7g2skhdui6",
       "https://cah-com-res.cloudinary.com/c_thumb,h_500,w_1000/production/marketing-photos/16802/q4o9kjxmudjuuqumrakn"
     ],
-    "location": "4559 SPARWOOD DR, LAS VEGAS, NV 89147",
+    "location": {
+      "address": "5528 Mavis Ave",
+      "city": "Whittier",
+      "postCode":  "90601-2123",
+      "region": "California",
+      "country": "United States"
+    },
     "area": 2219,
     "price":  4000
   }

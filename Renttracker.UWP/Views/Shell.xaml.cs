@@ -7,7 +7,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Renttracker.UWP.Views
+namespace Renttracker.Views
 {
     public sealed partial class Shell : Page
     {

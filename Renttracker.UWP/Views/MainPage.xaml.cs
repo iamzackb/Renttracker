@@ -1,11 +1,11 @@
 using System;
-using Renttracker.UWP.ViewModels;
+using Renttracker.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 
-namespace Renttracker.UWP.Views
+namespace Renttracker.Views
 {
     public sealed partial class MainPage : Page
     {

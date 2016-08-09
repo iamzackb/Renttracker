@@ -1,12 +1,29 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Renttracker.Models
 {
+    /// <summary>
+    /// Data model representing a house for rent
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class Home
+    public sealed class Home : ModelBase
     {
+
+        
+        
+        public override string Name
+        {
+            get
+            {
+              return $" { this.GetLocationString() }({ Price.ToString("C")})";
+            }
+        }
+
+        
+
         /// <summary>
         /// The area of this home in square feet
         /// </summary>
@@ -31,11 +48,7 @@ namespace Renttracker.Models
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        /// <summary>
-        /// A unique identifier for this home
-        /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid();
-
+       
         /// <summary>
         /// A list of urls pointing to images of this home
         /// </summary>
@@ -46,7 +59,9 @@ namespace Renttracker.Models
         /// The location of this home (should handle addresses and geo coordinates)
         /// </summary>
         [JsonProperty("location")]
-        public string Location { get; set; }
+        public HomeLocation Location { get; set; }
+
+       
 
         /// <summary>
         /// The price of this home
