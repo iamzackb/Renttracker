@@ -9,22 +9,16 @@ namespace Renttracker.Services
 {
     public interface ILocationService
     {
+
         /// <summary>
         /// Verifies whether location data is available
         /// </summary>
         bool IsLocationAvailable { get; }
 
+        Task RequestLocationAccess();
 
-        /// <summary>
-        /// Gets house data from a JSON sample file.
-        /// </summary>
-        /// <returns>IEnumerable (Home - asynchronous)</returns>
-        Task<IEnumerable<Home>> GetHomesFromSampleAsync();
 
-        /// <summary>
-        /// Gets house data from the Internet
-        /// </summary>
-        /// <returns>IEnumerable (Home - asynchronous)</returns>
-        Task<IEnumerable<Home>> GetHomesAsync();
+
+       
     }
 }

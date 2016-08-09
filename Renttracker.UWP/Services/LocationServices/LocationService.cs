@@ -15,7 +15,7 @@ namespace Renttracker.Services.LocationServices
     {
         private LocationService()
         {
-            _current = this;
+
         }
 
 
@@ -48,7 +48,7 @@ namespace Renttracker.Services.LocationServices
             }
         }
 
-        public async Task RequestLocationPermissions()
+        public async Task RequestLocationAccess()
         {
             LocatorStatus = await Geolocator.RequestAccessAsync();
             await Task.CompletedTask;
@@ -71,18 +71,6 @@ namespace Renttracker.Services.LocationServices
             }
         }
 
-        public Task<IEnumerable<Home>> GetHomesAsync()
-        {
-            throw new NotImplementedException("GetHomesAsync() is yet to be implemented. Please recompile in Debug mode to use GetHomesFromSampleAsync(), and eliminate this error.");
-        }
-
-        public async Task<IEnumerable<Home>> GetHomesFromSampleAsync()
-        {
-            var homes = new List<Home>();
-            var homesFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///homes.json"));
-            var homesJson = await FileIO.ReadTextAsync(homesFile);
-            homes = JArray.Parse(homesJson).ToObject<List<Home>>();
-            return homes;
-        }
+       
     }
 }

@@ -29,7 +29,7 @@ namespace Renttracker.ViewModels
 
         public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
         {
-            await LocationService.Current.RequestLocationPermissions();
+            await LocationService.Current.RequestLocationAccess();
         }
 
         Home _location;

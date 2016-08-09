@@ -13,6 +13,7 @@ using Windows.Devices.Geolocation;
 using Renttracker.Services.LocationServices;
 using Windows.ApplicationModel;
 using Windows.UI.Popups;
+using Renttracker.Services.DataServices;
 
 namespace Renttracker.ViewModels
 {
@@ -59,10 +60,10 @@ namespace Renttracker.ViewModels
                
 #if DEBUG
                     _homes.Clear();
-                    _homes.AddRange(await LocationService.Current.GetHomesFromSampleAsync());
+                    _homes.AddRange(await DataService.Current.GetHomesFromSampleAsync());
 #else
                 _homes.Clear();
-                _homes.AddRange(await LocationService.Current.GetHomesAsync());
+                _homes.AddRange(await DataService.Current.GetHomesAsync());
 #endif
                     
                 

@@ -51,7 +51,7 @@ namespace Renttracker
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            CoreApp.Initialize(Services.LocationServices.LocationService.Current);
+            CoreApp.Initialize(Services.LocationServices.LocationService.Current, Services.DataServices.DataService.Current);
             await Task.Delay(500);
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
