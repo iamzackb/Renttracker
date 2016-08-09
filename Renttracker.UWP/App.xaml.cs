@@ -1,6 +1,6 @@
 using Windows.UI.Xaml;
 using System.Threading.Tasks;
-using Renttracker.UWP.Services.SettingsServices;
+using Renttracker.Services.SettingsServices;
 using Windows.ApplicationModel.Activation;
 using Template10.Controls;
 using Template10.Common;
@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using Windows.UI.Xaml.Data;
 
-namespace Renttracker.UWP
+namespace Renttracker
 {
     /// Documentation on APIs used in this page:
     /// https://github.com/Windows-XAML/Template10/wiki
@@ -51,6 +51,8 @@ namespace Renttracker.UWP
 
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
+            CoreApp.Initialize(Services.LocationServices.LocationService.Current);
+            await Task.Delay(500);
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
         }

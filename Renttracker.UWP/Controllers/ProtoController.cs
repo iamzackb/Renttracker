@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace Renttracker.UWP.Controllers
+namespace Renttracker.Controllers
 {
     public static class ProtoController
     {

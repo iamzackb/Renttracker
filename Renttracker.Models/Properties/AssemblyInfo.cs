@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Renttracker.Models")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Renttracker (PCL)")]
+[assembly: AssemblyDescription("Portable Class Library containing Renttracker's core functionality")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Renttracker.Models")]
+[assembly: AssemblyProduct("Renttracker.PCL")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

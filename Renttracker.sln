@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renttracker.Models", "Renttracker.Models\Renttracker.Models.csproj", "{8BF8F50A-CA89-4BF3-93EA-017E061F8A18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renttracker", "Renttracker.Models\Renttracker.csproj", "{8BF8F50A-CA89-4BF3-93EA-017E061F8A18}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Renttracker.UWP", "Renttracker.UWP\Renttracker.UWP.csproj", "{845B6EB6-7468-4A4F-BFC7-0071C31D771A}"
 EndProject

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Renttracker.Models
 {
@@ -12,13 +13,16 @@ namespace Renttracker.Models
     {
 
         
+        
         public override string Name
         {
             get
             {
-                return $"{ Location.Name } ({ Price.ToString("C")})";
+              return $" { this.GetLocationString() }({ Price.ToString("C")})";
             }
         }
+
+        
 
         /// <summary>
         /// The area of this home in square feet
@@ -56,6 +60,8 @@ namespace Renttracker.Models
         /// </summary>
         [JsonProperty("location")]
         public HomeLocation Location { get; set; }
+
+       
 
         /// <summary>
         /// The price of this home

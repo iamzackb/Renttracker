@@ -1,5 +1,7 @@
-﻿using Renttracker.UWP.Services;
-using Renttracker.UWP.Views;
+﻿using Renttracker.Models;
+using Renttracker.Services;
+using Renttracker.Services.LocationServices;
+using Renttracker.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,24 +13,24 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Navigation;
 
-namespace Renttracker.UWP.ViewModels
+namespace Renttracker.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
-        string _location;
-        public string Location { get { return _location; } set { Set(ref _location, value); } }
+        Home _location;
+        public Home Location { get { return _location; } set { Set(ref _location, value); } }
 
         public MapControl MainMapControl;
 
         public async override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            Location = SessionState["map_location"] as string;
+            Location = SessionState["map_location"] as Home;
             MainMapControl = (NavigationService.Content as MapPage).FindName("MainMapControl") as MapControl;       //Pull our MainMapControl from the XAML.
 
-            if (Location.IsGeoCoordinates())
+            if (Location.Location.Latitude.HasValue && Location.Location.Longitude.HasValue)
             {
-                var latitude = double.Parse(Location.Split(',')[0]);
-                var longitude = double.Parse(Location.Split(',')[1]);
+                var latitude = Location.Location.Latitude.Value;
+                var longitude = Location.Location.Longitude.Value;
                 SetMapPointFromCoordinates(latitude, longitude);
             }
 
@@ -51,7 +53,7 @@ namespace Renttracker.UWP.ViewModels
                 };
 
                 var hintPoint = new Geopoint(queryHint);
-                var result = await MapLocationFinder.FindLocationsAsync(Location, hintPoint);
+                var result = await MapLocationFinder.FindLocationsAsync(Location.Name, hintPoint);
                 #endregion Search addresses
 
                 if (result.Status == MapLocationFinderStatus.Success && result.Locations.Count > 0)
