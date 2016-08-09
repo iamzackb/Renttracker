@@ -24,6 +24,7 @@ namespace Renttracker.Models
         /// </summary>
         public abstract string Name { get; }
 
+       
         
     }
 }
