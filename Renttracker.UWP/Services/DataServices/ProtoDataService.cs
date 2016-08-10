@@ -9,15 +9,14 @@ using Windows.Storage;
 
 namespace Renttracker.Services.DataServices
 {
-    public class ProtoDataService : IDataService
+    public class ProtoDataService : DataServiceBase
     {
         private ProtoDataService()
         {
 
         }
 
-        public event DataSourceUpdatedEventHandler DataSourceUpdated;
-
+       
         private static ProtoDataService _current = new ProtoDataService();
         public static ProtoDataService Current
         {
@@ -27,7 +26,8 @@ namespace Renttracker.Services.DataServices
             }
             
         }
-        public async Task<IEnumerable<Home>> GetHomesAsync()
+
+        public override async Task<IEnumerable<Home>> GetHomesAsync()
         {
             var homes = new List<Home>();
             var homesFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///homes.json"));

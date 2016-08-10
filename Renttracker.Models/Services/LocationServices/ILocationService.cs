@@ -10,10 +10,7 @@ namespace Renttracker.Services.LocationServices
     public interface ILocationService
     {
 
-        /// <summary>
-        /// Verifies whether location data is available
-        /// </summary>
-        bool IsLocationAvailable { get; }
+        event EventHandler<LocationAvailabilityChangedEventArgs> LocationAvailabilityChanged;
 
         /// <summary>
         /// Requests access to the user's location

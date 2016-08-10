@@ -22,80 +22,35 @@ namespace Renttracker.ViewModels
     {
         public MapPageViewModel()
         {
-            LocationService.Current.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == "IsLocationAvailable")
-                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
-            };
+            
         }
 
         private async Task RequestLocationAsync()
         {
             await LocationService.Current.RequestLocationAccess();
-            LocationService.Current.Locator.StatusChanged -= OnGeolocatorStatusChanged;
-            LocationService.Current.Locator.StatusChanged += OnGeolocatorStatusChanged;
             await Task.CompletedTask;
         }
 
-        private async void OnGeolocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
+        private async void OnLocationAvailabilityChanged(object sender, LocationAvailabilityChangedEventArgs e)
         {
-            switch (args.Status)
+            switch (e.AccessStatus)
             {
-                case PositionStatus.Ready:
+                case LocationAccessStatus.Available:
+                    IsLocationAvailable = true;
+                    break;
+                case LocationAccessStatus.Initializing:
+                    IsLocationAvailable = true;
+                    break;
+                case LocationAccessStatus.Unavailable:
+                    IsLocationAvailable = false;
+                    break;
+                case LocationAccessStatus.Unknown:
+                    await Dispatcher.DispatchAsync(async () =>
                     {
-                        break;
-                    }
-                case PositionStatus.NotInitialized:
-                case PositionStatus.Disabled:
-                    {
-                        await Dispatcher.DispatchAsync(async () =>
-                        {
-                            MessageDialog dlg = new MessageDialog("Your device's locator is not initialized. This may indicate that you have not granted permission for Renttracker to access your location. Would you like to grant permission now?", "Whoops!");
-                            dlg.Commands.Add(new UICommand("Yes", async (command) =>
-                            {
-                                await RequestLocationAsync();
-                            }));
-                            dlg.Commands.Add(new UICommand("No"));
-                            dlg.CancelCommandIndex = 1;
-                            await dlg.ShowAsync();
-                        });
-                        IsLocationAvailable = false;
-                        break;
-                    }
-                case PositionStatus.Initializing:
-                    {
-                        await Dispatcher.DispatchAsync(async () =>
-                        {
-                            await new MessageDialog("The GPS locator chip in your device is still initializing. Location data may not yet be available.", "Whoops!").ShowAsync();
-                        });
-                        break;
-                    }
-                case PositionStatus.NotAvailable:
-                    {
-                        await Dispatcher.DispatchAsync(async () =>
-                        {
-                            await new MessageDialog("Geolocation capabilities are not available on your version of Windows. Location data cannot be retrieved.", "Whoops!").ShowAsync();
-                        });
-                        NavigationService.GoBack();
-                        break;
-                    }
-                case PositionStatus.NoData:
-                    {
-                        await Dispatcher.DispatchAsync(async () =>
-                        {
-                            await new MessageDialog("Location data could not be obtained, as the location sensor could not find any valid data sources.", "Whoops!").ShowAsync();
-                        });
-                        NavigationService.GoBack();
-                        break;
-                    }
-                default:
-                    {
-                        await Dispatcher.DispatchAsync(async () =>
-                        {
-                            await new MessageDialog("The status of the locator was updated, but an invalid value was returned. Please try again later.", "Whoops").ShowAsync();
-                        });
-                        break;
-                    }
+                        await new MessageDialog("An invalid status was returned by your device's locator.", "Whoops!").ShowAsync();
+                    });
+                    IsLocationAvailable = false;
+                    break;
             }
         }
 
@@ -129,11 +84,13 @@ namespace Renttracker.ViewModels
             Location = SessionState["map_location"] as Home;
             MainMapControl = (NavigationService.Content as MapPage).FindName("MainMapControl") as MapControl;       //Pull our MainMapControl from the XAML.
 
+            LocationService.Current.LocationAvailabilityChanged += OnLocationAvailabilityChanged;
+
             if (!Location.HasValidAddress())
             {
                 if (!Location.HasValidCoordinates())
                     throw new InvalidOperationException("Selected location has invalid criteria");
-
+                await RequestLocationAsync();
                 var latitude = Location.Location.Latitude.Value;
                 var longitude = Location.Location.Longitude.Value;
                 SetMapPointFromCoordinates(latitude, longitude);
@@ -192,7 +149,7 @@ namespace Renttracker.ViewModels
         {
             if (!args.Suspending)
             {
-                LocationService.Current.Locator.StatusChanged -= OnGeolocatorStatusChanged;
+                LocationService.Current.LocationAvailabilityChanged -= OnLocationAvailabilityChanged;
             }
 
             await base.OnNavigatingFromAsync(args);
