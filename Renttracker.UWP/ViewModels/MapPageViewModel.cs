@@ -20,45 +20,6 @@ namespace Renttracker.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
-        public MapPageViewModel()
-        {
-            
-        }
-
-        private async Task RequestLocationAsync()
-        {
-            await LocationService.Current.RequestLocationAccess();
-            await Task.CompletedTask;
-        }
-
-        private async void OnLocationAvailabilityChanged(object sender, LocationAvailabilityChangedEventArgs e)
-        {
-            switch (e.AccessStatus)
-            {
-                case LocationAccessStatus.Available:
-                    IsLocationAvailable = true;
-                    break;
-                case LocationAccessStatus.Initializing:
-                    IsLocationAvailable = true;
-                    break;
-                case LocationAccessStatus.Unavailable:
-                    IsLocationAvailable = false;
-                    break;
-                case LocationAccessStatus.Unknown:
-                    await Dispatcher.DispatchAsync(async () =>
-                    {
-                        await new MessageDialog("An invalid status was returned by your device's locator.", "Whoops!").ShowAsync();
-                    });
-                    IsLocationAvailable = false;
-                    break;
-            }
-        }
-
-        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
-        {
-            await RequestLocationAsync();
-        }
-
         Home _location;
 
         private bool _isLocationAvailable;
@@ -74,14 +35,24 @@ namespace Renttracker.ViewModels
             }
         }
 
-
         public Home Location { get { return _location; } set { Set(ref _location, value); } }
-
         public MapControl MainMapControl;
+
+        public MapPageViewModel()
+        {
+            LocationService.Current.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "IsLocationAvailable")
+                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
+            };
+        }
+
+        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args) =>
+            await LocationService.Current.RequestLocationAccess();
 
         public async override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            Location = SessionState["map_location"] as Home;
+            Location = SessionState[Constants.MapLocationKey] as Home;
             MainMapControl = (NavigationService.Content as MapPage).FindName("MainMapControl") as MapControl;       //Pull our MainMapControl from the XAML.
 
             LocationService.Current.LocationAvailabilityChanged += OnLocationAvailabilityChanged;
