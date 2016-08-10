@@ -54,7 +54,7 @@ namespace Renttracker.ViewModels
             {
                 if (!Location.HasValidCoordinates())
                     throw new InvalidOperationException("Selected location has invalid criteria");
-                await RequestLocationAsync();
+                RequestLocationAccessAsync(this, new RoutedEventArgs());
                 var latitude = Location.Location.Latitude.Value;
                 var longitude = Location.Location.Longitude.Value;
                 SetMapPointFromCoordinates(latitude, longitude);
@@ -65,7 +65,7 @@ namespace Renttracker.ViewModels
                 //Assume it's an address
 
                 #region Get access to current location
-                await RequestLocationAsync();
+                RequestLocationAccessAsync(this, new RoutedEventArgs());
                 var pos = await LocationService.Current.Locator.GetGeopositionAsync();
                 #endregion Get access to current location
 
@@ -117,6 +117,29 @@ namespace Renttracker.ViewModels
             }
 
             await base.OnNavigatingFromAsync(args);
+        }
+
+        private async void OnLocationAvailabilityChanged(object sender, LocationAvailabilityChangedEventArgs e)
+        {
+            switch (e.AccessStatus)
+            {
+                case LocationAccessStatus.Available:
+                    IsLocationAvailable = true;
+                    break;
+                case LocationAccessStatus.Initializing:
+                    IsLocationAvailable = true;
+                    break;
+                case LocationAccessStatus.Unavailable:
+                    IsLocationAvailable = false;
+                    break;
+                case LocationAccessStatus.Unknown:
+                    await Dispatcher.DispatchAsync(async () =>
+                    {
+                        IsLocationAvailable = false;
+                        await new MessageDialog("The locator state is invalid. Location data is unavailable.", "Whoops!").ShowAsync();
+                    });
+                    break;
+            }
         }
     }
 }
