@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Renttracker.Services.DataServices
 {
+
+
+
+    public delegate void DataSourceUpdatedEventHandler(IDataService sender, DataSourceUpdatedEventArgs e);
     /// <summary>
     /// Provides a contract for a service that retrieves data.
     /// </summary>
     public interface IDataService
     {
-        /// <summary>
-        /// Gets house data from a JSON sample file.
-        /// </summary>
-        /// <returns>IEnumerable (Home - asynchronous)</returns>
-        Task<IEnumerable<Home>> GetHomesFromSampleAsync();
+        event DataSourceUpdatedEventHandler DataSourceUpdated;
 
         /// <summary>
         /// Gets house data from the Internet

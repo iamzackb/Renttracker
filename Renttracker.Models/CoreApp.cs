@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Renttracker
 {
+    
     public sealed class CoreApp
     {
         private CoreApp(ILocationService locationService, IDataService dataService)

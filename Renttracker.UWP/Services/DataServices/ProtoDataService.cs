@@ -9,14 +9,17 @@ using Windows.Storage;
 
 namespace Renttracker.Services.DataServices
 {
-    public class DataService : IDataService
+    public class ProtoDataService : IDataService
     {
-        private DataService()
+        private ProtoDataService()
         {
 
         }
-        private static DataService _current = new DataService();
-        public static DataService Current
+
+        public event DataSourceUpdatedEventHandler DataSourceUpdated;
+
+        private static ProtoDataService _current = new ProtoDataService();
+        public static ProtoDataService Current
         {
             get
             {
@@ -24,12 +27,7 @@ namespace Renttracker.Services.DataServices
             }
             
         }
-        public Task<IEnumerable<Home>> GetHomesAsync()
-        {
-            throw new NotImplementedException("GetHomesAsync() is yet to be implemented. Please recompile in Debug mode to use GetHomesFromSampleAsync(), and eliminate this error.");
-        }
-
-        public async Task<IEnumerable<Home>> GetHomesFromSampleAsync()
+        public async Task<IEnumerable<Home>> GetHomesAsync()
         {
             var homes = new List<Home>();
             var homesFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///homes.json"));
@@ -37,5 +35,7 @@ namespace Renttracker.Services.DataServices
             homes = JArray.Parse(homesJson).ToObject<List<Home>>();
             return homes;
         }
+
+       
     }
 }
