@@ -51,7 +51,7 @@ namespace Renttracker.ViewModels
         {
 #if DEBUG
                     _homes.Clear();
-                    _homes.AddRange(await ProtoDataService.Current.GetHomesAsync());
+                    _homes.AddRange(await DataService.Current.GetHomesAsync());
 #else
             _homes.Clear();
             _homes.AddRange(await DataService.Current.GetHomesAsync());

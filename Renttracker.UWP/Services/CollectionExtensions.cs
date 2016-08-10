@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Renttracker.Services
 {
-    public static class Extensions
+    public static class CollectionExtensions
     {
         public static void FilterCollection<T>(this ObservableCollectionView<T> collection, IEnumerable<Func<T, bool>> filters)
         {

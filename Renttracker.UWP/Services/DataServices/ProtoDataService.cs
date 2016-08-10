@@ -9,6 +9,13 @@ using Windows.Storage;
 
 namespace Renttracker.Services.DataServices
 {
+    /// <summary>
+    /// Prototype version of the Renttracker data service
+    /// </summary>
+    /// <remarks>
+    /// This prototype retrieves the data from a sample JSON file.
+    /// It is not intended to be used in the final product, and will be deprecated and removed prior to release.
+    /// </remarks>
     public class ProtoDataService : DataServiceBase
     {
         private ProtoDataService()
@@ -26,6 +33,7 @@ namespace Renttracker.Services.DataServices
             }
             
         }
+
 
         public override async Task<IEnumerable<Home>> GetHomesAsync()
         {

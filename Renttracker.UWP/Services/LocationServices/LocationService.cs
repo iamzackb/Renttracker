@@ -11,6 +11,9 @@ using System.ComponentModel;
 
 namespace Renttracker.Services.LocationServices
 {
+    /// <summary>
+    /// Service providing geolocation capabilities
+    /// </summary>
     public sealed class LocationService : LocationServiceBase
     {
 
