@@ -11,30 +11,11 @@ using System.ComponentModel;
 
 namespace Renttracker.Services.LocationServices
 {
-    public sealed class LocationService : ILocationService, INotifyPropertyChanged
+    public sealed class LocationService : LocationServiceBase
     {
-        private LocationService()
-        {
-            
-            _current = this;
-        }
 
-       
+        public override event EventHandler<LocationAvailabilityChangedEventArgs> LocationAvailabilityChanged;
 
-        private bool _isLocationAvailable;
-
-        public bool IsLocationAvailable
-        {
-            get
-            {
-                return _isLocationAvailable;
-            }
-            private set
-            {
-                _isLocationAvailable = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsLocationAvailable)));
-            }
-        }
 
         private Geolocator _Locator = default(Geolocator);
         /// <summary>
@@ -44,7 +25,12 @@ namespace Renttracker.Services.LocationServices
         {
             get
             {
-                return _Locator ?? new Geolocator();
+                if (_Locator == null)
+                {
+                    _Locator = new Geolocator();
+                    _Locator.StatusChanged += OnLocatorStatusChanged;
+                }
+                return _Locator;
             }
             set
             {
@@ -55,31 +41,43 @@ namespace Renttracker.Services.LocationServices
             }
         }
 
-        private GeolocationAccessStatus _locatorStatus;
-        private GeolocationAccessStatus LocatorStatus
+        private void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
         {
-            get
+           switch (args.Status)
             {
-                return _locatorStatus;
-            }
-            set
-            {
-                _locatorStatus = value;
-                IsLocationAvailable = (value == GeolocationAccessStatus.Allowed);
+                case PositionStatus.Disabled:
+                case PositionStatus.NotInitialized:
+                case PositionStatus.NotAvailable:
+                case PositionStatus.NoData:
+                    OnLocatorAvailabilityChanged(LocationAccessStatus.Unavailable);
+                    break;
+                case PositionStatus.Initializing:
+                    OnLocatorAvailabilityChanged(LocationAccessStatus.Initializing);
+                    break;
+                case PositionStatus.Ready:
+                    OnLocatorAvailabilityChanged(LocationAccessStatus.Available);
+                    break;
+                default:
+                    OnLocatorAvailabilityChanged(LocationAccessStatus.Unknown);
+                    break;                    
             }
         }
 
-
-        public async Task RequestLocationAccess()
+        private void OnLocatorAvailabilityChanged(LocationAccessStatus locationStatus)
         {
-            LocatorStatus = await Geolocator.RequestAccessAsync();
+            LocationAvailabilityChanged?.Invoke(this, new LocationAvailabilityChangedEventArgs(locationStatus));
+        }
+
+        public override async Task RequestLocationAccess()
+        {
+            await Geolocator.RequestAccessAsync();
             await Task.CompletedTask;
         }
        
 
         private static LocationService _current = new LocationService();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
         public static LocationService Current
         {

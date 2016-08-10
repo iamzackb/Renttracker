@@ -9,11 +9,8 @@ using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Renttracker.Views;
-using Windows.Devices.Geolocation;
-using Renttracker.Services.LocationServices;
-using Windows.ApplicationModel;
-using Windows.UI.Popups;
 using Renttracker.Services.DataServices;
+using Renttracker.Services;
 
 namespace Renttracker.ViewModels
 {
@@ -47,40 +44,19 @@ namespace Renttracker.ViewModels
             Homes = new ObservableCollectionView<Home>(_homes);
             PriceFilter = a => a.Price <= MaxPrice && a.Price >= MinPrice;
             BedsFilter = a => a.Beds <= MaxBeds && a.Beds >= MinBeds;
-            
-            
         }
-        
-       
+
+
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
-            try
-            {
-
-               
 #if DEBUG
                     _homes.Clear();
                     _homes.AddRange(await ProtoDataService.Current.GetHomesAsync());
 #else
-                _homes.Clear();
-                _homes.AddRange(await DataService.Current.GetHomesAsync());
+            _homes.Clear();
+            _homes.AddRange(await DataService.Current.GetHomesAsync());
 #endif
-                    
-                
-              
 
-
-
-
-            }
-            catch (NotImplementedException ex)
-            {
-                await Dispatcher.DispatchAsync(async () =>
-                {
-                    await new MessageDialog(ex.Message, "Whoops!").ShowAsync();
-                });
-            }
-           
             await Task.CompletedTask;
         }
 
@@ -97,10 +73,10 @@ namespace Renttracker.ViewModels
 
         public void HomeItemClick(object sender, ItemClickEventArgs e)
         {
-            if (SessionState.ContainsKey("map_location"))
-                SessionState.Remove("map_location");
+            if (SessionState.ContainsKey(Constants.MapLocationKey))
+                SessionState.Remove(Constants.MapLocationKey);
 
-            SessionState.Add("map_location", e.ClickedItem as Home);
+            SessionState.Add(Constants.MapLocationKey, e.ClickedItem as Home);
             NavigationService.Navigate(typeof(MapPage));
         }
 
@@ -128,19 +104,8 @@ namespace Renttracker.ViewModels
             FilterHomes();
         }
 
-        void FilterHomes()
-        {
-            Homes.Filter = a =>
-            {
-                var matches = true;
-                Filters.ForEach(b =>
-                {
-                    if (!b.Invoke(a).Equals(true))
-                        matches = false;
-                });
-                return matches;
-            };
-        }
+        void FilterHomes() =>
+            Homes.FilterCollection(Filters);
 
         void AddPriceFilter() =>
             Filters.Add(PriceFilter);
