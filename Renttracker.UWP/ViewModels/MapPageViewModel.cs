@@ -18,20 +18,6 @@ namespace Renttracker.ViewModels
 {
     public class MapPageViewModel : ViewModelBase
     {
-        public MapPageViewModel()
-        {
-            LocationService.Current.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == "IsLocationAvailable")
-                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
-            };
-        }
-
-        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args)
-        {
-            await LocationService.Current.RequestLocationAccess();
-        }
-
         Home _location;
 
         private bool _isLocationAvailable;
@@ -47,20 +33,30 @@ namespace Renttracker.ViewModels
             }
         }
 
-
         public Home Location { get { return _location; } set { Set(ref _location, value); } }
-
         public MapControl MainMapControl;
+
+        public MapPageViewModel()
+        {
+            LocationService.Current.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == "IsLocationAvailable")
+                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
+            };
+        }
+
+        public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args) =>
+            await LocationService.Current.RequestLocationAccess();
 
         public async override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            Location = SessionState["map_location"] as Home;
+            Location = SessionState[Constants.MapLocationKey] as Home;
             MainMapControl = (NavigationService.Content as MapPage).FindName("MainMapControl") as MapControl;       //Pull our MainMapControl from the XAML.
 
             if (!Location.HasValidAddress())
             {
                 if (!Location.HasValidCoordinates())
-                    throw new InvalidOperationException("Selected location has invalid criteria");
+                    throw new InvalidOperationException("Selected location has invalid criteria");      //Should show error message and toss back to MainPage -RnC
 
                 var latitude = Location.Location.Latitude.Value;
                 var longitude = Location.Location.Longitude.Value;
