@@ -38,14 +38,7 @@ namespace Renttracker.ViewModels
         public Home Location { get { return _location; } set { Set(ref _location, value); } }
         public MapControl MainMapControl;
 
-        public MapPageViewModel()
-        {
-            LocationService.Current.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == "IsLocationAvailable")
-                    IsLocationAvailable = LocationService.Current.IsLocationAvailable;
-            };
-        }
+       
 
         public async void RequestLocationAccessAsync(object sender, RoutedEventArgs args) =>
             await LocationService.Current.RequestLocationAccess();
